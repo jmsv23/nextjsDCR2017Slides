@@ -25,7 +25,9 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h1>Next.js</h1><h2>React without complications.</h2>
+					<h1>Next.js</h1>
+					<h2>React without complications.</h2>
+					<h6>Ing. Jose Manuel Santibañez Villanueva</h6>
 					<aside class="notes">
 						Titulo de la presentacion.
 					</aside>
@@ -131,7 +133,7 @@
 						<h1>Routing</h1>
 					</section>
 					<section>
-						<p>Next.js provee routing por default y cuenta con unos componentes especiales para generar los links que necesitamos en nuestro sistema para navegacion.</p>
+						<p>Next.js provee routing por default y cuenta con un componente especial para generar links y navegar dentro de nuestro proyecto.</p>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
@@ -154,6 +156,160 @@
 
 Note:
 El componente Link funciona con cualquier cosa dentro mientras que acepte la propiedad onClick.
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Componentes Compartidos</h2>
+					</section>
+					<section>
+						<p>Es posible usar components como en cualquier proyecto de react e incluirlos en cualquier pagina del proyecto.</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	import Link from 'next/link'
+
+	const linkStyles = {
+		marginLeft: 20,
+	}
+
+	const Header = () => (
+		<div>
+			<Link href="/">
+				<a style={linkStyles}>Home</a>
+			</Link>
+			<Link href="/about">
+				<a style={linkStyles}>About</a>
+			</Link>
+		</div>
+	)
+
+	export default Header
+```
+
+Note:
+Mostrar el demo del header en el step3 del projecto.
+						</textarea>
+					</section>
+					<section>
+						<p>Esto nos permite crear layouts para reutilizar codigo en multiples paginas.</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	import Header from './header'
+
+	const Layout = (props) => (
+	  <div>
+	    <Header />
+	    {props.children}
+	  </div>
+	)
+
+	export default Layout
+```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	import Layout from '../components/layout'
+
+	const Index = () => (
+	<Layout>
+		<p>Home Page</p>
+	</Layout>
+	)
+
+	export default Index
+```
+Note:
+Mostrar el demo del header en el step4 del projecto.
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Styling</h1>
+					</section>
+					<section>
+						<p>Next.js propone una implementacion de estilos encapsulados en el cual podemos usar css directamente.</p>
+						<aside class="notes">
+							El unico detalle es que debe ser implementado dentro de un javascript template string (ESC2015) si no fallara.
+						</aside>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	import Link from 'next/link'
+
+	const headerStyles = `
+	  .header {
+	    background: gray;
+	    width: 100%;
+	  }
+	  .header a {
+	    display: inline-block;
+	    color: white;
+	    margin: 10px;
+	  }
+	`
+
+	const Header = () => (
+	  <div className="header">
+	    <Link href="/">
+	      <a>Home</a>
+	    </Link>
+	    <Link href="/about">
+	      <a>About</a>
+	    </Link>
+	    <style>{headerStyles}</style>
+	  </div>
+	)
+
+	export default Header
+```
+Note:
+Mostrar el demo del header en el step5 del projecto.
+						</textarea>
+					</section>
+					<section>
+						<p>Que si quisieramos incluir un framework css o hacer alteraciones genrales a todo el proyecto, para realizar esta tarea podemos sobre escribir el component <a href="https://github.com/zeit/next.js/#custom-document">_document.js</a></p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	import Document, { Head, Main, NextScript } from 'next/document'
+	import flush from 'styled-jsx/server'
+
+	export default class MyDocument extends Document {
+	  static getInitialProps ({ renderPage }) {
+	    const {html, head, errorHtml, chunks} = renderPage()
+	    const styles = flush()
+	    return { html, head, errorHtml, chunks, styles }
+	  }
+
+	  render () {
+	    return (
+	     <html>
+	       <Head>
+	         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+	       </Head>
+	       <body className="custom_class">
+	         {this.props.customValue}
+	         <Main />
+	         <NextScript />
+	       </body>
+	     </html>
+	    )
+	  }
+	}
+```
+Note:
+Mostrar el demo del header en el step6 del projecto.
 						</textarea>
 					</section>
 				</section>
