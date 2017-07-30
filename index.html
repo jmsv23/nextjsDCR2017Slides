@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Next.js React without complications.</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Next.js</h1><h2>React without complications.</h2>
+					<aside class="notes">
+						Titulo de la presentacion.
+					</aside>
+				</section>
+				<section>
+					<section>
+						<h1>Que es Next.js?</h1>
+						<aside class="notes">
+							Es un framework minimalista de React que nos provee diversos features out of the box como un router y server-rendered.
+							Si alguna ves han configurado un proyecto de React desde 0 sabran lo tedioso que se puede volver añadir estas caracteristicas al mismo.
+						</aside>
+					</section>
+					<section>
+						<h2>Algunas de las caracteristicas mas importantes son:</h2>
+						<ul>
+							<li>Render en el servidor por default.</li>
+							<li>Division de codigo automatica para tener un page load mas rapido.</li>
+							<li>Client side routing simple (basado en paginas).</li>
+							<li>Ambiente de desarrollo basado en Webpack que soporta Hot Module Replacement.</li>
+							<li>Disponible para implementar con Express.js o cualquier servidor HTTP de Node.js</li>
+							<li>Es posible personalizar la configuracion de Babel y Webpack.</li>
+						</ul>
+						<aside class="notes">
+							Division de codigo: Cada Import que declares queda empaquetado y servido para cada pagina, lo que se traduce en que nunca cargas codigo de manera innecesaria.
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Instalacion</h1>
+					</section>
+					<section>
+						<pre>
+							<code>
+	mkdir todo
+	cd todo
+	npm init -y
+	npm install --save react react-dom next
+	mkdir pages
+							</code>
+						</pre>
+						<p>En el package.json</p>
+						<pre>
+							<code>
+{
+	"scripts": {
+		"dev": "next"
+	}
+}
+							</code>
+						</pre>
+						<aside class="notes">
+							La instalacion es simple ya que solo basta con instalar los paquetes de react y next.js y crear un directorio pages que sera donde se alojaran nuestras paginas, muy similar a lo que se hace con php.
+						</aside>
+					</section>
+					<section>
+						<p>React Stateless Functional Component:</p>
+						<pre>
+							<code>
+	const Index = () => (
+	  <div>
+	    <p>Hello World</p>
+	  </div>
+	)
+
+	export default Index
+							</code>
+						</pre>
+						<aside class="notes">
+							Existen 2 formas de escribir componentes y ambas se pueden usar en next.js
+							React Stateless Functional Components: En react .14 se introdujeron unos nuevos componentes funcionales sin estado que nos facilitan la tarea de generar componentes basicos con una sola funcion, ya que muchas veces no es necesario contar con todo el lifecycle de React en cada component.
+						</aside>
+					</section>
+					<section>
+						<p>Regular Component:</p>
+						<pre>
+							<code>
+	import {Component} from 'react'
+
+	class Index extends Component {
+	  constructor (props) {
+	    super(props)
+	  }
+	  render() {
+	    return (
+	      <div>
+	        <p>Hello World</p>
+	      </div>
+	    )
+	  }
+	}
+
+	export default Index
+							</code>
+						</pre>
+						<aside class="notes">
+							Un component regular que extiende de la clase Component que puede ejecutar todo el lifecycle de react (componentWillMount, componentDidMount, componentWillReceiveProps, shouldComponentUpdate....)
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Routing</h1>
+					</section>
+					<section>
+						<p>Next.js provee routing por default y cuenta con unos componentes especiales para generar los links que necesitamos en nuestro sistema para navegacion.</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	import Link from 'next/link'
+	const Index = () => (
+	  <div>
+	    <p>Hello World</p>
+			<Link href="/regular">
+				<a>Regular component</a>
+			</Link>
+			<Link href="/">
+  			<button>Index page</button>
+			</Link>
+	  </div>
+	)
+
+	export default Index
+```
+
+Note:
+El componente Link funciona con cualquier cosa dentro mientras que acepte la propiedad onClick.
+						</textarea>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
