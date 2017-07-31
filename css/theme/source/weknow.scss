@@ -1,0 +1,114 @@
+/**
+ * White theme for reveal.js. This is the opposite of the 'black' theme.
+ *
+ * By Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+// Include theme-specific fonts
+@import url(../../lib/font/source-sans-pro/source-sans-pro.css);
+@import url(../../lib/font/signika/signika.css);
+@import url(../../lib/font/font-awesome/css/font-awesome.css);
+
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #fff;
+
+$mainColor: #006d9e;
+$headingColor: #006d9e;
+
+$mainFontSize: 38px;
+$mainFont: 'signika', 'Source Sans Pro', Helvetica, sans-serif;
+$headingFont: 'signika', 'Source Sans Pro', Helvetica, sans-serif;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: uppercase;
+$headingFontWeight: 600;
+$linkColor: #2a76dd;
+$linkColorHover: lighten( $linkColor, 15% );
+$selectionBackgroundColor: lighten( $linkColor, 25% );
+
+$heading1Size: 2.5em;
+$heading2Size: 1.6em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+
+section.has-dark-background {
+	&, h1, h2, h3, h4, h5, h6 {
+		color: #fff;
+	}
+}
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
+
+.slides {
+	background: url('../../img/background.jpg') !important;
+	background-size: 100% !important;
+	background-repeat: no-repeat !important;
+	background-position: bottom !important;
+}
+.cover-img {
+	display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  padding: 0 !important;
+}
+.title-background {
+	width: 100% !important;
+	height: 100% !important;
+	background: url(../../img/front.jpg) !important;
+	background-size: auto 100% !important;
+	background-position: 50% !important;
+	position: relative;
+}
+.title-block {
+	padding: 20% 15% 0 0 !important;
+	h1,h2,h3,h4,h5,h6 {
+		color: white;
+		text-align: right;
+	}
+}
+.whoiam {
+	h4, h5 {
+		text-align: left !important;
+	}
+}
+.side-by-side {
+	display: flex;
+	& > div {
+		flex: 1;
+	}
+	.left {
+		text-align: left;
+		img {
+			width: 90%;
+			border: none;
+		}
+	}
+	.right {
+		h4, h5 {
+			text-transform: none !important;
+		}
+		h5 {
+			font-weight: normal !important;
+		}
+	}
+}
+.last-img {
+	width: 100% !important;
+	height: 100% !important;
+	background: url(../../img/last.jpg) !important;
+	background-size: auto 100% !important;
+	background-position: 50% !important;
+}
