@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<!-- <link rel="stylesheet" href="css/theme/weknow.css"> -->
-		<link rel="stylesheet" href="css/theme/weknow2.css">
+		<link rel="stylesheet" href="css/theme/weknow.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -34,7 +34,7 @@
 						</div>
 					</div>
 					<aside class="notes">
-						Titulo de la presentacion.
+						Titulo de la presentacion. demo https://github.com/jmsv23/nextjsDCR2017
 					</aside>
 				</section>
 				<section class="whoiam">
@@ -331,6 +331,162 @@ Note:
 Mostrar el demo del header en el step6 del projecto.
 						</textarea>
 					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Fetching Data</h1>
+					</section>
+					<section>
+						<p>Next.js hace uso de una funcion llamada getInitialProps para hacer la carga de datos iniciales en una pagina.</p>
+						<aside class="notes">
+							Puntualizar que next.js implementa su propia funcion fuera del lifecycle de React ya que es llamada solo 1 ves dependiendo si la pagina es rendereada en el servidor o en el cliente esto mejora el performance.
+						</aside>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+	Index.getInitialProps = async function() {
+	  const url = `https://api.giphy.com/v1/gifs/search?limit=20&q=cats&api_key=dc6zaTOxFJmzC`
+	  const gifs = await axios.get(url)
+	  .then((response) => {
+	    return response.data.data
+	  })
+	  .catch((err) => {
+	    return []
+	  })
+
+	  return {
+	    gifs: gifs
+	  }
+	}
+```
+Note:
+En el ejemplo se esta utilizando axios y la api de giphy, ver step7
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Paginas Dinámicas</h1>
+					</section>
+					<section>
+						<p>Next.js usa query parameters para generar paginas dinamicas.</p>
+						<p>Ejemplo /?searchKey=cats</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+Los Query params estan disponibles en el component como props dentro de props.url, o dentro de la variable context que se le pasa a la funcion getInitialProps(context)
+```
+	{
+		"query": {
+			"searchKey": "cats"
+		},
+		"pathname": "/"
+	}
+```
+Note:
+ver step8 y mostrar en el demo las propiedades de server renders.
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Urls Limpias</h1>
+					</section>
+					<section>
+						<p>El uso de query params en una url no es muy bueno para nuestro SEO por lo que siempre se busca tener url's limpias, con next.js tambien es posible.</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+```
+<Link as={/about/funciona} href={`/about?test=funciona`}>
+  <a>about/funciona</a>
+</Link>
+```
+Note:
+ver step9 (about page) Demostrar el uso del component link para enmascarar urls y la como no funciona en el server render.
+						</textarea>
+					</section>
+					<section>
+						<p>Para solucionar el problema que se genera en el server render tenemos que personalizar la implementacion del servidor en este ejemplo se usa expressjs pero se puede hacer con el node server que mas nos guste.</p>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+Basta con crear el archivo server.js
+```
+import express from 'express'
+import next from 'next'
+
+const dev = process.env.ENV !== 'production'
+const app = next({dev})
+const handle = app.getRequestHandler()
+
+app.prepare()
+.then( () => {
+  const server = express()
+
+  server.get('/detail/:back/:id', (req, res) => {
+    const actualPage = '/detail'
+    const queryParams = { id: req.params.id, back: req.params.back }
+    app.render(req, res, actualPage, queryParams)
+  })
+
+  server.get('/about/:test', (req, res) => {
+    const actualPage = '/about'
+    const queryParams = { test: req.params.test }
+    app.render(req, res, actualPage, queryParams)
+  })
+
+  server.get('*', (req, res) => {
+    return handle(req, res)
+  })
+
+  server.listen(3000, (err) => {
+    if(err) throw err
+    console.log('> Ready on http://localhost:3000')
+
+  })
+  .catch((ex) => {
+    console.error(ex.stack)
+    process.exit(1)
+  })
+})
+```
+Note:
+ver step10.
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+Actualizamos package.json
+cambiando:
+```
+	"scripts": {
+    "dev": "next",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+por:
+```
+	"scripts": {
+    "dev": "ENV=dev babel-node server.js --presets es2015,stage-2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+Note:
+ver step10.
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<h3>Recursos:</h3>
+					<ul>
+						<li><a href="https://github.com/zeit/next.js/" target="_blank">github next.js</a></li>
+						<li><a href="https://github.com/zeit/next.js/tree/v3-beta/examples" target="_blank">Ejemplos</a></li>
+						<li><a href="https://learnnextjs.com/" target="_blank">https://learnnextjs.com/</a></li>
+						<li><a href="https://github.com/jmsv23/nextjsDCR2017" target="_blank">Demo</a></li>
+						<li><a href="https://jmsv23.github.io/nextjsDCR2017Slides" target="_blank">Slides</a></li>
+					</ul>
 				</section>
 				<section class="cover-img">
 					<div class="last-img"></div>
